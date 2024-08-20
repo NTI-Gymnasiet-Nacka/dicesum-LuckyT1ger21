@@ -1,0 +1,118 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: two d6
+      id: two-d6
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: two d6
+        setup-command: ''
+        command: python3 main.py
+        input: 6 6
+        expected-output: '7'
+        comparison-method: exact
+        timeout: 10
+        max-score: 1
+    - name: d6d4
+      id: d6d4
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: d6d4
+        setup-command: ''
+        command: python3 main.py
+        input: 6 4
+        expected-output: |-
+          5
+          6
+          7
+        comparison-method: exact
+        timeout: 10
+        max-score: 1
+    - name: d12d20
+      id: d12d20
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: d12d20
+        setup-command: ''
+        command: python3 main.py
+        input: 12 20
+        expected-output: |-
+          13
+          14
+          15
+          16
+          17
+          18
+          19
+          20
+          21
+        comparison-method: exact
+        timeout: 10
+        max-score: 1
+    - name: d4d8
+      id: d4d8
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: d4d8
+        setup-command: ''
+        command: python3 main.py
+        input: 4 8
+        expected-output: |-
+          5
+          6
+          7
+          8
+          9
+        comparison-method: exact
+        timeout: 10
+        max-score: 1
+    - name: two d4
+      id: two-d4
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: two d4
+        setup-command: ''
+        command: python3 main.py
+        input: 4 4
+        expected-output: '5'
+        comparison-method: exact
+        timeout: 10
+        max-score: 1
+    - name: d8d10
+      id: d8d10
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: d8d10
+        setup-command: ''
+        command: python3 main.py
+        input: 8 10
+        expected-output: |-
+          9
+          10
+          11
+        comparison-method: exact
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TWO-D6_RESULTS: "${{steps.two-d6.outputs.result}}"
+        D6D4_RESULTS: "${{steps.d6d4.outputs.result}}"
+        D12D20_RESULTS: "${{steps.d12d20.outputs.result}}"
+        D4D8_RESULTS: "${{steps.d4d8.outputs.result}}"
+        TWO-D4_RESULTS: "${{steps.two-d4.outputs.result}}"
+        D8D10_RESULTS: "${{steps.d8d10.outputs.result}}"
+      with:
+        runners: two-d6,d6d4,d12d20,d4d8,two-d4,d8d10
