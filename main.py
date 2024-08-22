@@ -28,6 +28,10 @@ def mode(x):
     x=''
     s=1
     antal=len(common)
+    h=[]
+    for i in range(1,len(common)+1):
+        h.append(common[-i])
+    common=h
     for common in common:
         x=x+str(common)
         if s != antal:
